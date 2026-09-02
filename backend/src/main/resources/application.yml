@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: pulseops
+  datasource:
+    url: ${PULSEOPS_DB_URL:jdbc:mysql://localhost:3306/pulseops?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${PULSEOPS_DB_USER:pulseops}
+    password: ${PULSEOPS_DB_PASSWORD:pulseops}
+  jpa:
+    hibernate:
+      # 'update' keeps the project runnable without a migration tool.
+      # Production would switch to 'validate' + Flyway/Liquibase (see README).
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+server:
+  port: ${SERVER_PORT:8080}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: when-authorized
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+# ---------------------------------------------------------------------------
+# PulseOps domain configuration. Every number here is a tunable knob, not a
+# magic constant buried in code. See CorrelationProperties / IngestProperties.
+# ---------------------------------------------------------------------------
+pulseops:
+  ingest:
+    queue-capacity: 10000        # bounded queue -> backpressure when full
+    worker-count: 4              # size of the processing thread pool
+    batch-size: 200              # max events a worker drains per cycle
+    poll-timeout-ms: 500         # how long a worker waits for new work
+    offer-timeout-ms: 200        # how long a producer waits on a full queue
+
+  correlation:
+    window-minutes: 10           # events within this window are candidates
+    threshold: 0.55              # pairwise score >= threshold -> events linked
+    weights:
+      temporal: 0.30
+      service-dependency: 0.25
+      event-type: 0.20
+      deployment: 0.15
+      severity: 0.10
+    temporal:
+      half-life-seconds: 120     # temporal score = 0.5 at this gap
+    deployment:
+      lookback-minutes: 15       # a deployment this recent is "related"
+
+  root-cause:
+    deployment-lookback-minutes: 15
+
+logging:
+  level:
+    com.pulseops: INFO

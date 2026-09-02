@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:pulseops;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+pulseops:
+  ingest:
+    queue-capacity: 1000
+    worker-count: 2
+    batch-size: 50
+    poll-timeout-ms: 100
+    offer-timeout-ms: 100
+  correlation:
+    window-minutes: 10
+    threshold: 0.55
+    weights:
+      temporal: 0.30
+      service-dependency: 0.25
+      event-type: 0.20
+      deployment: 0.15
+      severity: 0.10
+    temporal:
+      half-life-seconds: 120
+    deployment:
+      lookback-minutes: 15
+  root-cause:
+    deployment-lookback-minutes: 15
+  reconcile:
+    # Effectively disable the background sweep in tests; reconciliation is driven
+    # explicitly by the simulator and by worker batches.
+    sweep-interval-ms: 3600000
