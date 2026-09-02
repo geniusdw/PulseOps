@@ -13,6 +13,13 @@ deterministic result into prose — it never decides the grouping.
 
 ---
 
+<img width="2830" height="1336" alt="image" src="https://github.com/user-attachments/assets/37915537-a11c-443b-b2bf-5bd91281e5b2" />
+<img width="2844" height="1302" alt="image" src="https://github.com/user-attachments/assets/b263e635-3f84-4386-b268-351071105d4b" />
+<img width="2386" height="1262" alt="image" src="https://github.com/user-attachments/assets/a4cfaca7-6368-4b16-93d3-027b5c0785a2" />
+<img width="2372" height="1318" alt="image" src="https://github.com/user-attachments/assets/fa2afa80-43ae-412e-b79c-ed07cbec6949" />
+<img width="2372" height="1224" alt="image" src="https://github.com/user-attachments/assets/dc88d877-e22b-4d71-b271-db97b6da0404" />
+
+
 ## 1. Problem statement
 
 When a cloud system breaks, engineers face a flood of signals from many services
